@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Palworld 1.0 — Passive Skills by Effect</title>
+<style>
+  :root{
+    --bg:#0f1a14; --panel:#16241c; --panel-hi:#1d3126; --line:#2a4034;
+    --text:#e9efe6; --text-dim:#a9beac; --moss:#7cb87a; --gold:#d9a441;
+    --rose:#c9645a; --sky:#5fa8c9;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(1200px 600px at 15% -10%, #1a2e21 0%, transparent 60%),
+      radial-gradient(1000px 500px at 100% 0%, #17281f 0%, transparent 55%),
+      var(--bg);
+    color:var(--text);
+    font-family:'Iowan Old Style','Palatino Linotype',Georgia,serif;
+    line-height:1.55; padding:0 0 100px 0;
+  }
+  .wrap{max-width:920px;margin:0 auto;padding:56px 24px 0;}
+  .eyebrow{font-family:ui-monospace,'SF Mono',Menlo,monospace;letter-spacing:.18em;text-transform:uppercase;font-size:11.5px;color:var(--moss);margin:0 0 14px;}
+  h1{font-size:38px;line-height:1.1;margin:0 0 14px;font-weight:600;color:#f4f7ee;letter-spacing:-0.01em;}
+  .sub{color:var(--text-dim);font-size:16px;max-width:680px;margin:0 0 22px;}
+  .note{background:linear-gradient(180deg,rgba(95,168,201,.08),rgba(95,168,201,.03));border:1px solid rgba(95,168,201,.3);border-radius:10px;padding:14px 18px;font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:12.5px;line-height:1.6;color:#cfe4ee;margin-bottom:14px;}
+  .note b{color:var(--sky);}
+  .keyrow{display:flex;flex-wrap:wrap;gap:16px;margin:20px 0 8px;font-family:ui-monospace,monospace;font-size:12.5px;color:var(--text-dim);}
+  .keyrow span b{color:var(--text);}
+
+  /* Index */
+  .index{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:22px 26px;margin:30px 0 10px;}
+  .index h2{font-size:12px;text-transform:uppercase;letter-spacing:.14em;color:var(--sky);font-family:ui-monospace,monospace;margin:0 0 16px;}
+  .index ul{list-style:none;margin:0;padding:0;columns:2;column-gap:34px;}
+  @media(max-width:600px){.index ul{columns:1;}}
+  .index li{margin:0 0 9px;break-inside:avoid;}
+  .index a{color:var(--text);text-decoration:none;font-size:14.5px;border-bottom:1px solid transparent;transition:color .15s,border-color .15s;}
+  .index a:hover{color:var(--moss);border-color:var(--moss);}
+  .index a::before{content:"›";color:var(--gold);margin-right:9px;font-family:ui-monospace,monospace;}
+
+  /* Sections */
+  section{scroll-margin-top:20px;margin-top:44px;}
+  section h2.sec{font-size:20px;color:#f4f7ee;font-weight:600;margin:0 0 4px;padding-bottom:12px;border-bottom:1px solid var(--line);display:flex;align-items:baseline;gap:12px;}
+  section h2.sec .back{margin-left:auto;font-family:ui-monospace,monospace;font-size:11px;font-weight:400;color:var(--text-dim);text-decoration:none;text-transform:uppercase;letter-spacing:.1em;border-bottom:none;}
+  section h2.sec .back:hover{color:var(--moss);}
+  section .desc{color:var(--text-dim);font-size:14px;font-style:italic;margin:12px 0 16px;}
+
+  ul.traits{list-style:none;margin:14px 0 0;padding:0;}
+  ul.traits li{padding:9px 0 9px 0;border-bottom:1px solid rgba(42,64,52,.55);font-size:14.5px;color:var(--text-dim);}
+  ul.traits li:last-child{border-bottom:none;}
+  .tname{color:#f4f7ee;font-weight:600;}
+  .badge{font-size:12px;margin-left:5px;}
+  .draw{color:var(--rose);font-style:italic;font-size:13px;}
+  .subhead{font-family:ui-monospace,monospace;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--moss);margin:16px 0 4px;}
+
+  h3.group{font-size:12px;text-transform:uppercase;letter-spacing:.14em;color:var(--gold);font-family:ui-monospace,monospace;margin:50px 0 0;padding-top:22px;border-top:1px dashed var(--line);}
+
+  footer{margin-top:64px;padding-top:20px;border-top:1px solid var(--line);font-size:12px;color:var(--text-dim);font-family:ui-monospace,monospace;line-height:1.7;}
+  a.anchor-self{color:inherit;text-decoration:none;}
+</style>
+</head>
+<body>
+<div class="wrap" id="top">
+
+  <p class="eyebrow">Palworld 1.0 · Passive Skill Reference</p>
+  <h1>Passive Skills Organized by Effect</h1>
+  <p class="sub">Every Pal passive skill in Palworld 1.0, cross-listed under <b>each</b> effect it provides. A trait that boosts both Attack and Work Speed (like Lucky) appears in both sections, showing its full effect line each time.</p>
+
+  <div class="note"><b>Scope:</b> This covers rolled <b>Pal passive skills</b> only (the randomly-inherited traits, ~114 entries from paldb.cc), not gear/armor-granted stat auras. Cross-checked against Game8 and palworld.gg, current to 1.0 (post-July 2026).</div>
+
+  <div class="keyrow">
+    <span><b>🌈</b> Rainbow tier</span>
+    <span><b>🌳</b> World Tree (has drawback)</span>
+    <span><b>🧬</b> Mutation-origin</span>
+    <span><b>➕</b> positive</span>
+    <span><b>➖</b> negative</span>
+  </div>
+
+  <div class="index">
+    <h2>Index — click to jump</h2>
+    <ul>
+      <li><a href="#attack">Attack</a></li>
+      <li><a href="#defense">Defense</a></li>
+      <li><a href="#work-speed">Work Speed</a></li>
+      <li><a href="#movement-speed">Movement Speed</a></li>
+      <li><a href="#water-speed">Water Movement Speed</a></li>
+      <li><a href="#max-health">Max Health</a></li>
+      <li><a href="#max-stamina">Max Stamina</a></li>
+      <li><a href="#regen">Health Regen / Life Steal</a></li>
+      <li><a href="#ele-attack">Elemental Attack Boost</a></li>
+      <li><a href="#ele-reduction">Elemental Damage Reduction</a></li>
+      <li><a href="#immunity">Status / Damage-Type Immunity</a></li>
+      <li><a href="#cc-immunity">Crowd-Control Immunity</a></li>
+      <li><a href="#san">SAN (Sanity)</a></li>
+      <li><a href="#hunger">Hunger</a></li>
+      <li><a href="#cooldown">Active Skill Cooldown</a></li>
+      <li><a href="#player-buffs">Player-Boosting (Party Buffs)</a></li>
+      <li><a href="#farming">Work Suitability (Farming)</a></li>
+      <li><a href="#yield">Yield / Drop Rate</a></li>
+      <li><a href="#breeding">Breeding</a></li>
+      <li><a href="#night">Night Work / Sleep</a></li>
+      <li><a href="#mounted">Mounted / Jump</a></li>
+      <li><a href="#sale">Sale Price</a></li>
+      <li><a href="#misc">Misc / Utility</a></li>
+      <li><a href="#negative">Negative-Only Traits</a></li>
+    </ul>
+  </div>
+
+  <!-- ATTACK -->
+  <section id="attack">
+    <h2 class="sec">Attack <a href="#top" class="back">↑ index</a></h2>
+    <p class="desc">Traits that raise the Pal's own Attack stat.</p>
+    <ul class="traits">
+      <li><span class="tname">Twin-Edged Holy Blade</span> <span class="badge">🌳</span> — Attack +50%, Defense −30%; World Tree resources don't vanish when approached</li>
+      <li><span class="tname">God of Destruction</span> <span class="badge">🌳</span> — Attack +40%, Defense +20%, Max Health −50%</li>
+      <li><span class="tname">Legend</span> <span class="badge">🌈</span> — Attack +20%, Defense +20%, Movement Speed +20%</li>
+      <li><span class="tname">Demon God</span> <span class="badge">🌈</span> — Attack +30%, Defense +5%</li>
+      <li><span class="tname">Immortality</span> <span class="badge">🧬</span> — Life Steal +5%, Auto Health Regen +100%, Attack +15%</li>
+      <li><span class="tname">Lucky</span> <span class="badge">🌈</span> — Attack +15%, Work Speed +20%</li>
+      <li><span class="tname">Serenity</span> <span class="badge">➕</span> — Active skill cooldown −30%, Attack +10%</li>
+      <li><span class="tname">Otherworldly Cells</span> <span class="badge">➕</span> — Attack +10%, Fire dmg reduction 15%, Lightning dmg reduction 15%</li>
+      <li><span class="tname">Ferocious</span> <span class="badge">➕</span> — Attack +20%</li>
+      <li><span class="tname">Musclehead</span> <span class="badge">➕</span> — Attack +30%, Work Speed −50%</li>
+      <li><span class="tname">Brave</span> <span class="badge">➕</span> — Attack +10%</li>
+      <li><span class="tname">Hooligan</span> <span class="badge">➕</span> — Attack +15%, Work Speed −10%</li>
+      <li><span class="tname">Sadist</span> <span class="badge">➕</span> — Attack +15%, Defense −15%</li>
+      <li><span class="tname">Aggressive</span> <span class="badge">➕</span> — Attack +10%, Defense −10%</li>
+      <li><span class="tname">Work Slave</span> <span class="badge">➕</span> — Work Speed +30%, Attack −30% <span class="draw">(net Attack loss)</span></li>
+      <li><span class="tname">Masochist</span> <span class="badge">➕</span> — Defense +15%, Attack −15% <span class="draw">(net Attack loss)</span></li>
+    </ul>
+    <p class="desc">For flat elemental attack boosts (Ice Emperor, Lord of the Sea, etc.), see <a href="#ele-attack" style="color:var(--moss);">Elemental Attack Boost</a>.</p>
+  </section>
+
+  <!-- DEFENSE -->
+  <section id="defense">
+    <h2 class="sec">Defense <a href="#top" class="back">↑ index</a></h2>
+    <p class="desc">Traits that raise the Pal's own Defense stat.</p>
+    <ul class="traits">
+      <li><span class="tname">Sanctified Meat Shield</span> <span class="badge">🌳</span> — Defense +50%, Attack −30%</li>
+      <li><span class="tname">God of Destruction</span> <span class="badge">🌳</span> — Attack +40%, Defense +20%, Max Health −50%</li>
+      <li><span class="tname">Diamond Body</span> <span class="badge">🌈</span> — Defense +30%, immune to Flinch, immune to Knockback</li>
+      <li><span class="tname">Legend</span> <span class="badge">🌈</span> — Attack +20%, Defense +20%, Movement Speed +20%</li>
+      <li><span class="tname">Idiosyncratic</span> <span class="badge">🧬</span> — Auto Health Regen +50%, Defense +25%, immune to Poison & Burn</li>
+      <li><span class="tname">Demon God</span> <span class="badge">🌈</span> — Attack +30%, Defense +5%</li>
+      <li><span class="tname">Lunker</span> <span class="badge">🌈</span> — Water dmg +20%, Ice dmg +20%, Defense +20%</li>
+      <li><span class="tname">Burly Body</span> <span class="badge">➕</span> — Defense +20%, immune to Flinch</li>
+      <li><span class="tname">Heavyweight</span> <span class="badge">➕</span> — Defense +20%, immune to Knockback</li>
+      <li><span class="tname">Masochist</span> <span class="badge">➕</span> — Defense +15%, Attack −15%</li>
+      <li><span class="tname">Hard Skin</span> <span class="badge">➕</span> — Defense +10%</li>
+      <li><span class="tname">Sadist</span> <span class="badge">➕</span> — Attack +15%, Defense −15% <span class="draw">(net Defense loss)</span></li>
+      <li><span class="tname">Aggressive</span> <span class="badge">➕</span> — Attack +10%, Defense −10% <span class="draw">(net Defense loss)</span></li>
+      <li><span class="tname">Conceited</span> <span class="badge">➕</span> — Work Speed +10%, Defense −10% <span class="draw">(net Defense loss)</span></li>
+    </ul>
+  </section>
+
+  <!-- WORK SPEED -->
+  <section id="work-speed">
+    <h2 class="sec">Work Speed <a href="#top" class="back">↑ index</a></h2>
+    <p class="desc">Traits that raise the Pal's own Work Speed.</p>
+    <ul class="traits">
+      <li><span class="tname">Demon's Hand</span> <span class="badge">🌳</span> — Work Speed +90%, SAN drops 15% faster</li>
+      <li><span class="tname">Remarkable Craftsmanship</span> <span class="badge">🌈</span> — Work Speed +75%</li>
+      <li><span class="tname">Artisan</span> <span class="badge">➕</span> — Work Speed +50%</li>
+      <li><span class="tname">Work Slave</span> <span class="badge">➕</span> — Work Speed +30%, Attack −30%</li>
+      <li><span class="tname">Lucky</span> <span class="badge">🌈</span> — Attack +15%, Work Speed +20%</li>
+      <li><span class="tname">Serious</span> <span class="badge">➕</span> — Work Speed +20%</li>
+      <li><span class="tname">Conceited</span> <span class="badge">➕</span> — Work Speed +10%, Defense −10%</li>
+      <li><span class="tname">Hermit Sage</span> <span class="badge">🌳</span> — SAN drops 50% slower, Work Speed −20% <span class="draw">(net Work Speed loss)</span></li>
+      <li><span class="tname">Musclehead</span> <span class="badge">➕</span> — Attack +30%, Work Speed −50% <span class="draw">(net Work Speed loss)</span></li>
+      <li><span class="tname">Hooligan</span> <span class="badge">➕</span> — Attack +15%, Work Speed −10% <span class="draw">(net Work Speed loss)</span></li>
+    </ul>
+  </section>
+
+  <!-- MOVEMENT SPEED -->
+  <section id="movement-speed">
+    <h2 class="sec">Movement Speed <a href="#top" class="back">↑ index</a></h2>
+    <p class="desc">Ground / general movement speed.</p>
+    <ul class="traits">
+      <li><span class="tname">Dimensional Leap</span> <span class="badge">🌳</span> — Movement Speed +50%, Hunger drops 15% faster</li>
+      <li><span class="tname">Swift</span> <span class="badge">🌈</span> — Movement Speed +30%</li>
+      <li><span class="tname">Legend</span> <span class="badge">🌈</span> — Attack +20%, Defense +20%, Movement Speed +20%</li>
+      <li><span class="tname">Runner</span> <span class="badge">➕</span> — Movement Speed +20%</li>
+      <li><span class="tname">Nimble</span> <span class="badge">➕</span> — Movement Speed +10%</li>
+    </ul>
+  </section>
+
+  <!-- WATER SPEED -->
+  <section id="water-speed">
+    <h2 class="sec">Water Movement Speed <a href="#top" class="back">↑ index</a></h2>
+    <p class="desc">Swim speed specifically.</p>
+    <ul class="traits">
+      <li><span class="tname">King of the Waves</span> <span class="badge">🌈</span> — +50% movement speed on water</li>
+      <li><span class="tname">Ace Swimmer</span> <span class="badge">➕</span> — +40% movement speed on water</li>
+      <li><span class="tname">Sleek Stroke</span> <span class="badge">➕</span> — +30% movement speed on water</li>
+    </ul>
+  </section>
+
+  <!-- MAX HEALTH -->
+  <section id="max-health">
+    <h2 class="sec">Max Health <a href="#top" class="back">↑ index</a></h2>
+    <p class="desc">Note: 1.0's rolled Pal passives don't include a clean flat "+Max HP" trait — HP boosts come from gear/armor auras. The only Pal passives touching Max HP are drawbacks.</p>
+    <ul class="traits">
+      <li><span class="tname">God of Destruction</span> <span class="badge">🌳</span> — Max Health −50% <span class="draw">(drawback)</span></li>
+      <li><span class="tname">World Tree Seedbed</span> <span class="badge">🌳</span> — Hunger drops 50% slower, HP −20% <span class="draw">(drawback)</span></li>
+    </ul>
+  </section>
+
+  <!-- MAX STAMINA -->
+  <section id="max-stamina">
+    <h2 class="sec">Max Stamina <a href="#top" class="back">↑ index</a></h2>
+    <p class="desc">Rideable Pals only.</p>
+    <ul class="traits">
+      <li><span class="tname">Eternal Engine</span> <span class="badge">🌈</span> — Max Stamina +75%</li>
+      <li><span class="tname">Infinite Stamina</span> <span class="badge">➕</span> — Max Stamina +50%</li>
+      <li><span class="tname">Fit as a Fiddle</span> <span class="badge">➕</span> — Max Stamina +25%</li>
+      <li><span class="tname">Sickly</span> <span class="badge">➖</span> — Max Stamina −25% <span class="draw">(negative)</span></li>
+    </ul>
+  </section>
+
+  <!-- REGEN -->
+  <section id="regen">
+    <h2 class="sec">Health Regen / Life Steal <a href="#top" class="back">↑ index</a></h2>
+    <ul class="traits">
+      <li><span class="tname">Immortality</span> <span class="badge">🧬</span> — Life Steal +5%, Auto Health Regen +100%, Attack +15%</li>
+      <li><span class="tname">Idiosyncratic</span> <span class="badge">🧬</span> — Auto Health Regen +50%, Defense +25%, immune to Poison & Burn</li>
+      <li><span class="tname">Vampiric</span> <span class="badge">🌈</span> — Absorbs a portion of damage dealt to restore HP; doesn't sleep at night</li>
+    </ul>
+  </section>
+
+  <!-- ELEMENTAL ATTACK -->
+  <section id="ele-attack">
+    <h2 class="sec">Elemental Attack Boost <a href="#top" class="back">↑ index</a></h2>
+    <p class="desc">Flat +% damage for a specific element. Most single-element ones are species-locked "Emperor / Lord" passives.</p>
+    <p class="subhead">Rainbow tier (dual-element, broader access)</p>
+    <ul class="traits">
+      <li><span class="tname">Eternal Flame</span> <span class="badge">🌈</span> — Fire +30%, Lightning +30%</li>
+      <li><span class="tname">Siren of the Void</span> <span class="badge">🌈</span> — Dark +30%, Ice +30%</li>
+      <li><span class="tname">Invader</span> <span class="badge">🌈</span> — Dark +30%, Dragon +30%</li>
+      <li><span class="tname">Savior</span> <span class="badge">🌈</span> — Neutral +30%, Grass +30%</li>
+      <li><span class="tname">Lunker</span> <span class="badge">🌈</span> — Water +20%, Ice +20%, Defense +20%</li>
+    </ul>
+    <p class="subhead">Species-locked single-element (+30%)</p>
+    <ul class="traits">
+      <li><span class="tname">Celestial Emperor</span> — Neutral +30% <span class="draw">(Paladius)</span></li>
+      <li><span class="tname">Flame Emperor</span> — Fire +30% <span class="draw">(Blazamut)</span></li>
+      <li><span class="tname">Lord of the Sea</span> — Water +30% <span class="draw">(Jormuntide)</span></li>
+      <li><span class="tname">Lord of Lightning</span> — Lightning +30% <span class="draw">(Orserk)</span></li>
+      <li><span class="tname">Spirit Emperor</span> — Grass +30% <span class="draw">(Lyleen)</span></li>
+      <li><span class="tname">Ice Emperor</span> — Ice +30% <span class="draw">(Frostallion)</span></li>
+      <li><span class="tname">Earth Emperor</span> — Earth/Ground +30% <span class="draw">(Anubis)</span></li>
+      <li><span class="tname">Lord of the Underworld</span> — Dark +30% <span class="draw">(Necromus, Frostallion Noct)</span></li>
+      <li><span class="tname">Divine Dragon</span> — Dragon +30% <span class="draw">(Jetragon)</span></li>
+    </ul>
+    <p class="subhead">Common single-element (+10%)</p>
+    <ul class="traits">
+      <li><span class="tname">Spirit of Zen</span> — Neutral +10%</li>
+      <li><span class="tname">Pyromaniac</span> — Fire +10%</li>
+      <li><span class="tname">Hydromaniac</span> — Water +10%</li>
+      <li><span class="tname">Capacitor</span> — Lightning +10%</li>
+      <li><span class="tname">Fragrant Foliage</span> — Grass +10%</li>
+      <li><span class="tname">Coldblooded</span> — Ice +10%</li>
+      <li><span class="tname">Power of Gaia</span> — Earth/Ground +10%</li>
+      <li><span class="tname">Veil of Darkness</span> — Dark +10%</li>
+      <li><span class="tname">Blood of the Dragon</span> — Dragon +10%</li>
+    </ul>
+  </section>
+
+  <!-- ELEMENTAL REDUCTION -->
+  <section id="ele-reduction">
+    <h2 class="sec">Elemental Damage Reduction <a href="#top" class="back">↑ index</a></h2>
+    <p class="desc">Incoming damage reduction for a specific element (−10% each unless noted).</p>
+    <ul class="traits">
+      <li><span class="tname">Abnormal</span> — Neutral damage taken −10% <span class="draw">(Lovander)</span></li>
+      <li><span class="tname">Suntan Lover</span> — Fire damage taken −10%</li>
+      <li><span class="tname">Waterproof</span> — Water damage taken −10%</li>
+      <li><span class="tname">Insulated Body</span> — Lightning damage taken −10%</li>
+      <li><span class="tname">Botanical Barrier</span> — Grass damage taken −10%</li>
+      <li><span class="tname">Heated Body</span> — Ice damage taken −10%</li>
+      <li><span class="tname">Earthquake Resistant</span> — Earth/Ground damage taken −10%</li>
+      <li><span class="tname">Cheery</span> — Dark damage taken −10%</li>
+      <li><span class="tname">Dragonkiller</span> — Dragon damage taken −10%</li>
+      <li><span class="tname">Otherworldly Cells</span> <span class="badge">➕</span> — Attack +10%, Fire −15%, Lightning −15%</li>
+    </ul>
+  </section>
+
+  <!-- IMMUNITY -->
+  <section id="immunity">
+    <h2 class="sec">Status / Damage-Type Immunity <a href="#top" class="back">↑ index</a></h2>
+    <ul class="traits">
+      <li><span class="tname">Idiosyncratic</span> <span class="badge">🧬</span> — immune to Poison, immune to Burn (+ regen/defense)</li>
+      <li><span class="tname">Heavily Armored</span> <span class="badge">🧬</span> — immune to Explosion damage</li>
+      <li><span class="tname">Diamond Body</span> <span class="badge">🌈</span> — immune to Flinch & Knockback (+Defense)</li>
+    </ul>
+  </section>
+
+  <!-- CC IMMUNITY -->
+  <section id="cc-immunity">
+    <h2 class="sec">Crowd-Control Immunity (Flinch / Knockback) <a href="#top" class="back">↑ index</a></h2>
+    <ul class="traits">
+      <li><span class="tname">Diamond Body</span> <span class="badge">🌈</span> — immune to Flinch, immune to Knockback, Defense +30%</li>
+      <li><span class="tname">Burly Body</span> <span class="badge">➕</span> — immune to Flinch, Defense +20%</li>
+      <li><span class="tname">Heavyweight</span> <span class="badge">➕</span> — immune to Knockback, Defense +20%</li>
+    </ul>
+  </section>
+
+  <!-- SAN -->
+  <section id="san">
+    <h2 class="sec">SAN (Sanity) <a href="#top" class="back">↑ index</a></h2>
+    <ul class="traits">
+      <li><span class="tname">Hermit Sage</span> <span class="badge">🌳</span> — SAN drops 50% slower, Work Speed −20%</li>
+      <li><span class="tname">Heart of the Immovable King</span> <span class="badge">🌈</span> — SAN drops 20% slower</li>
+      <li><span class="tname">Workaholic</span> <span class="badge">➕</span> — SAN drops 15% slower</li>
+      <li><span class="tname">Positive Thinker</span> <span class="badge">➕</span> — SAN drops 10% slower</li>
+      <li><span class="tname">Demon's Hand</span> <span class="badge">🌳</span> — Work Speed +90%, SAN drops 15% faster <span class="draw">(drawback)</span></li>
+      <li><span class="tname">Unstable</span> <span class="badge">➖</span> — SAN drops 10% faster <span class="draw">(negative)</span></li>
+      <li><span class="tname">Destructive</span> <span class="badge">➖</span> — SAN drops 15% faster <span class="draw">(negative)</span></li>
+    </ul>
+  </section>
+
+  <!-- HUNGER -->
+  <section id="hunger">
+    <h2 class="sec">Hunger <a href="#top" class="back">↑ index</a></h2>
+    <ul class="traits">
+      <li><span class="tname">World Tree Seedbed</span> <span class="badge">🌳</span> — Hunger drops 50% slower, HP −20%</li>
+      <li><span class="tname">Mastery of Fasting</span> <span class="badge">🌈</span> — Hunger drops 20% slower</li>
+      <li><span class="tname">Diet Lover</span> <span class="badge">➕</span> — Hunger drops 15% slower</li>
+      <li><span class="tname">Dainty Eater</span> <span class="badge">➕</span> — Hunger drops 10% slower</li>
+      <li><span class="tname">Dimensional Leap</span> <span class="badge">🌳</span> — Movement Speed +50%, Hunger drops 15% faster <span class="draw">(drawback)</span></li>
+      <li><span class="tname">Glutton</span> <span class="badge">➖</span> — Hunger drops 10% faster <span class="draw">(Relaxaurus, negative)</span></li>
+      <li><span class="tname">Bottomless Stomach</span> <span class="badge">➖</span> — Hunger drops 15% faster <span class="draw">(negative)</span></li>
+    </ul>
+  </section>
+
+  <!-- COOLDOWN -->
+  <section id="cooldown">
+    <h2 class="sec">Active Skill Cooldown <a href="#top" class="back">↑ index</a></h2>
+    <ul class="traits">
+      <li><span class="tname">Serenity</span> <span class="badge">➕</span> — Active skill cooldown −30%, Attack +10%</li>
+      <li><span class="tname">Impatient</span> <span class="badge">➕</span> — Active skill cooldown −15%</li>
+      <li><span class="tname">Easygoing</span> <span class="badge">➖</span> — Active skill cooldown +15% (longer) <span class="draw">(negative)</span></li>
+    </ul>
+  </section>
+
+  <!-- PLAYER BUFFS -->
+  <section id="player-buffs">
+    <h2 class="sec">Player-Boosting (Party Buffs) <a href="#top" class="back">↑ index</a></h2>
+    <p class="desc">These buff the <b>player</b> while the Pal is in your party — no need to summon it. They stack across party members.</p>
+    <ul class="traits">
+      <li><span class="tname">Vanguard</span> <span class="badge">➕</span> — Player Attack +10%</li>
+      <li><span class="tname">Stronghold Strategist</span> <span class="badge">➕</span> — Player Defense +10%</li>
+      <li><span class="tname">Motivational Leader</span> <span class="badge">➕</span> — Player Work Speed +25%</li>
+      <li><span class="tname">Mine Foreman</span> <span class="badge">➕</span> — Player Mining Efficiency +25%</li>
+      <li><span class="tname">Logging Foreman</span> <span class="badge">➕</span> — Player Logging Efficiency +25%</li>
+      <li><span class="tname">Wellness Watcher</span> <span class="badge">➕</span> — Player Stamina Consumption −5%</li>
+      <li><span class="tname">Healing Coach</span> <span class="badge">➕</span> — Player Auto Health Regen +5%</li>
+      <li><span class="tname">Reload Master</span> <span class="badge">➕</span> — Player Reload Speed +4%</li>
+    </ul>
+  </section>
+
+  <!-- FARMING -->
+  <section id="farming">
+    <h2 class="sec">Work Suitability (Farming) <a href="#top" class="back">↑ index</a></h2>
+    <ul class="traits">
+      <li><span class="tname">Ranch Master</span> <span class="badge">🌈</span> — Farming Work Suitability +2</li>
+      <li><span class="tname">Farmhand</span> <span class="badge">➕</span> — Farming Work Suitability +1</li>
+    </ul>
+  </section>
+
+  <!-- YIELD -->
+  <section id="yield">
+    <h2 class="sec">Yield / Drop Rate <a href="#top" class="back">↑ index</a></h2>
+    <ul class="traits">
+      <li><span class="tname">Lavish Hospitality</span> <span class="badge">🌈</span> — Your dropped items +100%</li>
+      <li><span class="tname">Service-Minded</span> <span class="badge">➕</span> — Your dropped items +50%</li>
+    </ul>
+  </section>
+
+  <!-- BREEDING -->
+  <section id="breeding">
+    <h2 class="sec">Breeding <a href="#top" class="back">↑ index</a></h2>
+    <ul class="traits">
+      <li><span class="tname">Philanthropist</span> <span class="badge">➕</span> — When assigned to Breeding Farm, breeding speed +100%</li>
+      <li><span class="tname">Babysitter</span> <span class="badge">🧬</span> — At base: egg production speed +30% and incubation speed +30% for Breeding Farm Pals</li>
+    </ul>
+  </section>
+
+  <!-- NIGHT -->
+  <section id="night">
+    <h2 class="sec">Night Work / Sleep <a href="#top" class="back">↑ index</a></h2>
+    <ul class="traits">
+      <li><span class="tname">Vampiric</span> <span class="badge">🌈</span> — doesn't sleep at night, keeps working (+ life steal)</li>
+      <li><span class="tname">Insomnia</span> <span class="badge">➕</span> — doesn't sleep, keeps working at night</li>
+      <li><span class="tname">Nocturnal</span> <span class="badge">➕</span> — doesn't sleep at night, keeps working</li>
+      <li><span class="tname">Night Owl</span> <span class="badge">➖</span> — tends to nap through the day <span class="draw">(drawback)</span></li>
+    </ul>
+  </section>
+
+  <!-- MOUNTED -->
+  <section id="mounted">
+    <h2 class="sec">Mounted / Jump <a href="#top" class="back">↑ index</a></h2>
+    <ul class="traits">
+      <li><span class="tname">Skymarcher</span> <span class="badge">🧬</span> — Mounted Jump Count +2</li>
+      <li><span class="tname">Lightfooted</span> <span class="badge">➕</span> — Mounted Jump Count +1</li>
+    </ul>
+    <p class="desc">Stamina-for-mounts traits are under <a href="#max-stamina" style="color:var(--moss);">Max Stamina</a>.</p>
+  </section>
+
+  <!-- SALE -->
+  <section id="sale">
+    <h2 class="sec">Sale Price <a href="#top" class="back">↑ index</a></h2>
+    <ul class="traits">
+      <li><span class="tname">Noble</span> <span class="badge">➕</span> — Item sale value +5%</li>
+      <li><span class="tname">Fine Furs</span> <span class="badge">➕</span> — Item sale value +3%</li>
+      <li><span class="tname">Shabby</span> <span class="badge">➖</span> — Item sale value −10% <span class="draw">(negative)</span></li>
+    </ul>
+  </section>
+
+  <!-- MISC -->
+  <section id="misc">
+    <h2 class="sec">Misc / Utility <a href="#top" class="back">↑ index</a></h2>
+    <ul class="traits">
+      <li><span class="tname">Mercy Hit</span> — Pacifist; won't reduce target HP below 1 (from Ring of Mercy / Pal Tamer's Glasses)</li>
+      <li><span class="tname">World Tree passives (all)</span> <span class="badge">🌳</span> — shared bonus: World Tree harvestable resources don't vanish when approached</li>
+    </ul>
+  </section>
+
+  <!-- NEGATIVE -->
+  <section id="negative">
+    <h2 class="sec">Negative-Only Traits <a href="#top" class="back">↑ index</a></h2>
+    <p class="desc">Traits with no upside — avoid when breeding for quality.</p>
+    <ul class="traits">
+      <li><span class="tname">Slacker</span> — Work Speed −30%</li>
+      <li><span class="tname">Pacifist</span> — Attack −20%</li>
+      <li><span class="tname">Brittle</span> — Defense −20%</li>
+      <li><span class="tname">Clumsy</span> — Work Speed −10%</li>
+      <li><span class="tname">Downtrodden</span> — Defense −10%</li>
+      <li><span class="tname">Coward</span> — Attack −10% <span class="draw">(Cattiva)</span></li>
+      <li><span class="tname">Glutton</span> — Hunger drops 10% faster <span class="draw">(Relaxaurus)</span></li>
+      <li><span class="tname">Unstable</span> — SAN drops 10% faster</li>
+      <li><span class="tname">Destructive</span> — SAN drops 15% faster</li>
+      <li><span class="tname">Bottomless Stomach</span> — Hunger drops 15% faster</li>
+      <li><span class="tname">Sickly</span> — Max Stamina −25% (rideable)</li>
+      <li><span class="tname">Shabby</span> — Sale value −10%</li>
+      <li><span class="tname">Easygoing</span> — Active skill cooldown +15% (longer)</li>
+      <li><span class="tname">Night Owl</span> — naps through the day</li>
+    </ul>
+  </section>
+
+  <footer>
+    Data sourced from paldb.cc (Pal Passive Skills) cross-checked against Game8 and palworld.gg, current to Palworld 1.0 (post-July 2026). Mixed traits appear under every applicable section. Gear/armor-granted stat auras are intentionally excluded — this file is rolled Pal passives only. Some effect values (especially the player-buff and elemental sub-lists) trace to community datamining and may shift slightly with patches.
+  </footer>
+
+</div>
+</body>
+</html>
