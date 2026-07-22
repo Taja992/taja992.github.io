@@ -496,13 +496,42 @@ function traitLi(tr){
     + '<span class="add" title="Add to selected Pal">+</span>'
     + '</div>';
 }
+
+/* value used to sort a trait within a given section (high \u2192 low). null = sort by name */
+const SORTKEYS = {
+  attack:['atk'], defense:['def'], 'work-speed':['workSpeed'], 'movement-speed':['moveSpeed'],
+  'water-speed':['waterSpeed'], 'max-health':['maxHP'], 'max-stamina':['maxStamina'],
+  regen:['healthRegen','lifeSteal'], san:['sanResist'], hunger:['hungerResist'], cooldown:['cooldown'],
+  farming:['farmingSuit'], yield:['dropRate'], breeding:['breedingSpeed'], mounted:['jumpCount'], sale:['salePrice'],
+};
+function sectionValue(tr,sid){
+  let keys;
+  if(sid==='ele-attack') keys=Object.keys(tr.fx).filter(k=>k.endsWith('Atk'));
+  else if(sid==='ele-reduction') keys=Object.keys(tr.fx).filter(k=>k.endsWith('Res'));
+  else if(sid==='player-buffs') keys=Object.keys(tr.fx).filter(k=>STAT[k]&&STAT[k].player);
+  else if(sid==='negative'){ const v=Object.values(tr.fx); return v.length? v.reduce((a,b)=>a+b,0) : 0; }
+  else keys=SORTKEYS[sid];
+  if(!keys||!keys.length) return null;            // flag-only sections \u2192 name sort
+  const present=keys.filter(k=>k in tr.fx).map(k=>tr.fx[k]);
+  return present.length ? Math.max(...present) : -Infinity;
+}
+function sortMembers(members,sid){
+  return members.slice().sort((a,b)=>{
+    const va=sectionValue(a,sid), vb=sectionValue(b,sid);
+    if(va===null&&vb===null) return a.name.localeCompare(b.name);
+    if(va===null) return 1;
+    if(vb===null) return -1;
+    if(vb!==va) return vb-va;                      // higher value first
+    return a.name.localeCompare(b.name);
+  });
+}
 function renderSections(){
   const idx=document.getElementById('index-list');
   const wrap=document.getElementById('sections');
   let idxHtml='', secHtml='';
   for(const [sid,title,desc] of SECTIONS){
     idxHtml += '<li><a href="#'+sid+'">'+title.replace(/\s*\(.*/,'')+'</a></li>';
-    const members = TRAITS.filter(t=>catsFor(t).has(sid));
+    const members = sortMembers(TRAITS.filter(t=>catsFor(t).has(sid)), sid);
     let body='';
     if(sid==='ele-attack'){
       for(const sub of ['rainbow','species','common']){
