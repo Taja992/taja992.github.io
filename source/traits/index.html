@@ -34,24 +34,37 @@
   .keyrow{display:flex;flex-wrap:wrap;gap:14px;margin:16px 0 4px;font-family:ui-monospace,monospace;font-size:12px;color:var(--text-dim);}
   .keyrow span b{color:var(--text);}
 
-  /* two-column layout */
-  .layout{max-width:1320px;margin:26px auto 0;padding:0 22px;display:flex;gap:26px;align-items:flex-start;}
+  /* three-column layout: sticky index | content | sticky planner */
+  .layout{max-width:1480px;margin:26px auto 0;padding:0 22px;display:flex;gap:24px;align-items:flex-start;}
+  .railL{width:216px;flex:none;position:sticky;top:16px;max-height:calc(100vh - 32px);overflow-y:auto;}
   .main{flex:1;min-width:0;}
   .planner{width:372px;flex:none;position:sticky;top:16px;max-height:calc(100vh - 32px);overflow-y:auto;}
+  @media(max-width:1220px){
+    /* drop the left rail into an inline box at the top of content */
+    .railL{position:static;width:100%;max-height:none;}
+    .layout{flex-wrap:wrap;}
+    .railL{order:-2;}
+    .main{order:0;flex-basis:100%;}
+  }
   @media(max-width:1040px){
     .layout{flex-direction:column;}
     .planner{position:static;width:100%;max-height:none;order:-1;}
   }
 
-  /* Index */
-  .index{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 22px;margin:0 0 10px;}
-  .index h2{font-size:12px;text-transform:uppercase;letter-spacing:.14em;color:var(--sky);font-family:ui-monospace,monospace;margin:0 0 14px;}
-  .index ul{list-style:none;margin:0;padding:0;columns:2;column-gap:30px;}
+  /* Index (left rail) */
+  .index{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 16px;margin:0;}
+  .index h2{font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:var(--sky);font-family:ui-monospace,monospace;margin:0 0 12px;}
+  .index ul{list-style:none;margin:0;padding:0;columns:1;}
+  .index li{margin:0 0 3px;break-inside:avoid;}
+  .index a{color:var(--text-dim);text-decoration:none;font-size:13px;display:block;padding:4px 7px;border-radius:6px;transition:color .12s,background .12s;}
+  .index a:hover{color:#f4f7ee;background:var(--panel-hi);}
+  .index a.active{color:var(--moss);background:var(--panel-hi);}
+  .index a::before{content:"›";color:var(--gold);margin-right:7px;font-family:ui-monospace,monospace;}
+  /* when the rail collapses inline on smaller screens, go back to 2 columns */
+  @media(max-width:1220px){
+    .index ul{columns:2;column-gap:26px;}
+  }
   @media(max-width:600px){.index ul{columns:1;}}
-  .index li{margin:0 0 8px;break-inside:avoid;}
-  .index a{color:var(--text);text-decoration:none;font-size:14px;border-bottom:1px solid transparent;transition:color .15s,border-color .15s;}
-  .index a:hover{color:var(--moss);border-color:var(--moss);}
-  .index a::before{content:"›";color:var(--gold);margin-right:8px;font-family:ui-monospace,monospace;}
 
   /* Sections */
   section{scroll-margin-top:16px;margin-top:38px;}
@@ -158,11 +171,14 @@
 </div>
 
 <div class="layout">
-  <div class="main">
+  <div class="railL">
     <div class="index" id="index-box">
       <h2>Index — click to jump</h2>
       <ul id="index-list"></ul>
     </div>
+  </div>
+
+  <div class="main">
     <div id="sections"></div>
   </div>
 
@@ -742,11 +758,35 @@ document.getElementById('clear-all').addEventListener('click',()=>{
   if(confirm('Clear all 5 Pals?')){ state.pals=Array.from({length:NPALS},()=>[]); save(); renderPlanner(); }
 });
 
+/* scroll-spy: highlight the section currently in view within the left index */
+function initScrollSpy(){
+  const links = Array.from(document.querySelectorAll('#index-list a'));
+  const map = {};
+  links.forEach(a=>{ map[a.getAttribute('href').slice(1)] = a; });
+  const secs = Array.from(document.querySelectorAll('section[id]'));
+  if(!secs.length) return;
+  const obs = new IntersectionObserver((entries)=>{
+    entries.forEach(en=>{
+      if(en.isIntersecting){
+        links.forEach(l=>l.classList.remove('active'));
+        const a = map[en.target.id];
+        if(a){
+          a.classList.add('active');
+          // keep the active link visible inside the scrollable rail
+          a.scrollIntoView({block:'nearest'});
+        }
+      }
+    });
+  }, {rootMargin:'0px 0px -75% 0px', threshold:0});
+  secs.forEach(s=>obs.observe(s));
+}
+
 /* init */
 load();
 renderSections();
 wireReference();
 renderPlanner();
+initScrollSpy();
 if(!canPersist){ document.getElementById('persist-note').textContent='(Saving disabled in this preview \u2014 works when hosted.)'; }
 </script>
 </body>
